@@ -1,10 +1,9 @@
-// Example of Standard Connections in Web Data Connectors using JSONPlaceholder JSON endpoints
-// Tableau 10.1 - WDC API v2.1
+/* jshint undef: true, unused: true */
+/* globals $, XMLHttpRequest*/
 
-// https://api.powerbi.com/beta/9612db77-a166-4330-8593-2398cbcedea2/datasets/d9b53d1a-4864-4a4d-adc3-f1d13f56f6ef/rows?key=z%2FXe7h%2BEN1Pc1eBg7bJRA9e52CQYBJx5YmO%2BKgsxJ01vc%2BdwYmyJjQYWACZk3CoHN52fl01H9AhxY%2Fe1M9rXlg%3D%3D
-
+//
 // Define our Web Data Connector
-(function(){
+(function () {
 
 
 
@@ -93,62 +92,50 @@
       console.log('got err', error)
     });
 
+
+    var addNumericalCounter = 0;
+
     var onEventChange = pryv.MESSAGES.MONITOR.ON_EVENT_CHANGE;
     monitor.addEventListener(onEventChange, function (changes) {
+
+      var numsAdd = [];
+
       ['created', 'modified', 'trashed'].forEach(function (action) {
         changes[action].forEach(function (event) {
+
+
           if (!isNaN(parseFloat(event.content)) && isFinite(event.content)) { {
-            console.log('sending event', action, 'event:', event.getData())
 
-            var data = {
-              "streamId": event.streamId,
-              "time":  new Date(event.time * 1000),
-              "type": event.type,
-              "content": event.content
+              numsAdd.push({
+                streamId: event.streamId,
+                time:  new Date(event.time * 1000),
+                type: event.type,
+                content: event.content
+              });
             }
-
-
-
-            $.ajax({
-              type: "POST",
-              url: powerbiAPI,
-              contentType: "application/json; charset=utf-8",
-              data: JSON.stringify(data),
-              dataType: "json",
-              success: function(data){console.log('success', data)},
-              failure: function(errMsg) {console.log('success', errMsg)}
-            });
-          }
           }
         });
+
+        if (numsAdd.length > 0) {
+          $('#dataCount').text(addNumericalCounter += numsAdd.length);
+          $.ajax({
+            type: 'POST',
+            url: powerbiAPI,
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ rows: numsAdd}),
+            dataType: "json",
+            success: function(data){console.log('success', data)},
+            failure: function(errMsg) {console.log('success', errMsg)}
+          });
+
+        }
+
       });
     });
 
     monitor.start(function (err) {
       if (err) console.log('error on start', err)
     });
-
-
-
-
-
-
-    function myXHRPost(url, content) {
-      var http = new XMLHttpRequest();
-
-      http.open("POST", url, true);
-
-      //Send the proper header information along with the request
-      http.setRequestHeader("Content-type", "application/json");
-
-      http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          alert(http.responseText);
-        }
-      }
-      http.send(content);
-    }
-
   }
 })();
 

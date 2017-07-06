@@ -2,9 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Standard Connections Placeholder Example</title>
-  <!--  In order to use promises, like this example, you will need to include this polyfill to add promises
-        functionality to the built in Tableau WDC browser (it does not have ES6 functionality by default)    -->
+  <title>Power BI - Pryv sample bridge</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
   <script type="text/javascript" src="https://api.pryv.com/lib-javascript/latest/pryv.js"></script>
   <script src="https://momentjs.com/downloads/moment.min.js"></script>
@@ -44,8 +42,20 @@
 <body>
 <h1>Pryv Web Data Connector For Power BI</h1>
 <span id="pryv-button"></span> </span><strong><span id="signlabel">⇠ sign in here</strong></span><br>
-    </span><strong><input type="text" id="powerbiAPI">PowerBI API</strong></span><br>
+    </span><strong><input type="text" id="powerbiAPI"> PowerBI API</strong></span><br>
 <span id="dataCount"></span><br>
 <BR>
+<BR>
+Parmeters for powerBI DATASET
+<pre>
+  [
+  {
+    "streamId" :"AAAAA555555",
+    "type" :"AAAAA555555",
+    "content" :98.6,
+    "time" :"2017-07-05T14:03:23.490Z"
+  }
+]
+</pre>
 </body>
 </html>
